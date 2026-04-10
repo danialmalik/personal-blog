@@ -21,3 +21,14 @@ export const SITE = {
   lang: "en",
   timezone: "Asia/Karachi",
 } as const;
+
+export const GISCUS = {
+  repo: "danialmalik/personal-blog",
+  repoId: "R_kgDOR-3RnA",
+  category: "blog-post-comments",
+  categoryId: "DIC_kwDOR-3RnM4C6h6F",
+  mapping: "pathname",
+  reactionsEnabled: true,
+  inputPosition: "top",
+  lang: "en",
+} as const;

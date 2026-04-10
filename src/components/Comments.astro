@@ -1,11 +1,20 @@
 ---
-// Giscus comments component
-// Configure at https://giscus.app after creating a GitHub repo
-// Update the data-repo, data-repo-id, data-category, and data-category-id values
+import { GISCUS } from "@/config";
 ---
 
 <section class="giscus-wrapper mt-8 app-layout">
-  <div id="giscus-container"></div>
+  <div
+    id="giscus-container"
+    data-repo={GISCUS.repo}
+    data-repo-id={GISCUS.repoId}
+    data-category={GISCUS.category}
+    data-category-id={GISCUS.categoryId}
+    data-mapping={GISCUS.mapping}
+    data-reactions-enabled={GISCUS.reactionsEnabled ? "1" : "0"}
+    data-input-position={GISCUS.inputPosition}
+    data-lang={GISCUS.lang}
+  >
+  </div>
 </section>
 
 <script is:inline data-astro-rerun>
@@ -13,7 +22,6 @@
     const container = document.getElementById("giscus-container");
     if (!container) return;
 
-    // Clear previous instance on page navigation
     while (container.firstChild) {
       container.removeChild(container.firstChild);
     }
@@ -24,17 +32,17 @@
 
     const script = document.createElement("script");
     script.src = "https://giscus.app/client.js";
-    script.setAttribute("data-repo", "danialmalik/personal-blog"); // TODO: update with your repo
-    script.setAttribute("data-repo-id", ""); // TODO: get from https://giscus.app
-    script.setAttribute("data-category", "General");
-    script.setAttribute("data-category-id", ""); // TODO: get from https://giscus.app
-    script.setAttribute("data-mapping", "pathname");
+    script.setAttribute("data-repo", container.dataset.repo);
+    script.setAttribute("data-repo-id", container.dataset.repoId);
+    script.setAttribute("data-category", container.dataset.category);
+    script.setAttribute("data-category-id", container.dataset.categoryId);
+    script.setAttribute("data-mapping", container.dataset.mapping);
     script.setAttribute("data-strict", "0");
-    script.setAttribute("data-reactions-enabled", "1");
+    script.setAttribute("data-reactions-enabled", container.dataset.reactionsEnabled);
     script.setAttribute("data-emit-metadata", "0");
-    script.setAttribute("data-input-position", "top");
+    script.setAttribute("data-input-position", container.dataset.inputPosition);
     script.setAttribute("data-theme", theme);
-    script.setAttribute("data-lang", "en");
+    script.setAttribute("data-lang", container.dataset.lang);
     script.setAttribute("data-loading", "lazy");
     script.crossOrigin = "anonymous";
     script.async = true;
@@ -44,7 +52,6 @@
 
   loadGiscus();
 
-  // Update giscus theme when site theme changes
   const observer = new MutationObserver(() => {
     const theme = document.documentElement.dataset.theme === "dark"
       ? "dark"
