@@ -1,0 +1,65 @@
+---
+// Giscus comments component
+// Configure at https://giscus.app after creating a GitHub repo
+// Update the data-repo, data-repo-id, data-category, and data-category-id values
+---
+
+<section class="giscus-wrapper mt-8 app-layout">
+  <div id="giscus-container"></div>
+</section>
+
+<script is:inline data-astro-rerun>
+  function loadGiscus() {
+    const container = document.getElementById("giscus-container");
+    if (!container) return;
+
+    // Clear previous instance on page navigation
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+
+    const theme = document.documentElement.dataset.theme === "dark"
+      ? "dark"
+      : "light";
+
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.setAttribute("data-repo", "danialmalik/personal-blog"); // TODO: update with your repo
+    script.setAttribute("data-repo-id", ""); // TODO: get from https://giscus.app
+    script.setAttribute("data-category", "General");
+    script.setAttribute("data-category-id", ""); // TODO: get from https://giscus.app
+    script.setAttribute("data-mapping", "pathname");
+    script.setAttribute("data-strict", "0");
+    script.setAttribute("data-reactions-enabled", "1");
+    script.setAttribute("data-emit-metadata", "0");
+    script.setAttribute("data-input-position", "top");
+    script.setAttribute("data-theme", theme);
+    script.setAttribute("data-lang", "en");
+    script.setAttribute("data-loading", "lazy");
+    script.crossOrigin = "anonymous";
+    script.async = true;
+
+    container.appendChild(script);
+  }
+
+  loadGiscus();
+
+  // Update giscus theme when site theme changes
+  const observer = new MutationObserver(() => {
+    const theme = document.documentElement.dataset.theme === "dark"
+      ? "dark"
+      : "light";
+    const iframe = document.querySelector("iframe.giscus-frame");
+    if (iframe) {
+      iframe.contentWindow.postMessage(
+        { giscus: { setConfig: { theme } } },
+        "https://giscus.app"
+      );
+    }
+  });
+
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
+  });
+</script>
